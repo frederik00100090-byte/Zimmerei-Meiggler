@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zimmerei Maiggler — Holzbau in Stafflangen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --walnut:#241a12;
+    --walnut-2:#2d2117;
+    --walnut-3:#36291b;
+    --parchment:#f2e9d8;
+    --parchment-dim:#bcae95;
+    --amber:#c17a3e;
+    --amber-bright:#dd9657;
+    --steel:#7b8a92;
+    --line:#4a3b28;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
+  }
+  body{background:var(--walnut);color:var(--parchment);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden;}
+  h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;letter-spacing:-0.01em;}
+  a{color:inherit;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  .mono{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:var(--amber-bright);letter-spacing:0.04em;}
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s cubic-bezier(.19,1,.22,1), transform 0.8s cubic-bezier(.19,1,.22,1);}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:20px 36px;mix-blend-mode:normal;}
+  nav .brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.05rem;display:flex;align-items:center;gap:10px;}
+  nav .brand svg{flex-shrink:0;}
+  nav ul{display:flex;gap:4px;list-style:none;background:rgba(36,26,18,0.55);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:30px;padding:5px;}
+  nav ul a{display:block;text-decoration:none;color:var(--parchment-dim);font-size:0.84rem;padding:9px 18px;border-radius:24px;transition:background 0.25s, color 0.25s;}
+  nav ul a.active{background:var(--amber);color:#241a12;font-weight:600;}
+  nav .cta{background:var(--parchment);color:var(--walnut);padding:10px 20px;border-radius:30px;text-decoration:none;font-size:0.82rem;font-weight:600;}
+  @media(max-width:860px){ nav ul{display:none;} }
+
+  /* ================= HOME ================= */
+  .home{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:center;padding:120px 0 60px;overflow:hidden;}
+  .truss-bg{position:absolute;inset:0;z-index:0;opacity:0.5;}
+  .home-inner{position:relative;z-index:2;max-width:760px;}
+  .home h1{font-size:clamp(2.8rem,7vw,5.6rem);line-height:0.98;margin:22px 0 26px;}
+  .home h1 em{font-style:normal;color:var(--amber-bright);}
+  .home p{color:var(--parchment-dim);font-size:1.12rem;max-width:480px;margin-bottom:34px;}
+  .btn-row{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn-amber{background:var(--amber);color:#241a12;padding:14px 28px;border-radius:4px;text-decoration:none;font-weight:600;font-size:0.92rem;transition:background .2s, transform .2s;}
+  .btn-amber:hover{background:var(--amber-bright);transform:translateY(-2px);}
+  .btn-ghost{border:1px solid var(--line);padding:14px 28px;border-radius:4px;text-decoration:none;color:var(--parchment);font-size:0.92rem;}
+  .btn-ghost:hover{border-color:var(--amber);}
+  .scroll-cue{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:2;}
+  .scroll-cue span{font-size:0.68rem;color:var(--parchment-dim);font-family:'IBM Plex Mono',monospace;letter-spacing:0.08em;}
+  .scroll-cue .line{width:1px;height:34px;background:linear-gradient(var(--amber),transparent);animation:scrolldrop 1.8s ease-in-out infinite;}
+  @keyframes scrolldrop{0%{opacity:0;transform:scaleY(0.3);transform-origin:top;}50%{opacity:1;transform:scaleY(1);transform-origin:top;}100%{opacity:0;transform:scaleY(0.3);transform-origin:bottom;}}
+
+  /* ================= STORY (horizontal) ================= */
+  .story{padding:90px 0 70px;}
+  .story-head{max-width:620px;margin:0 auto 40px;padding:0 32px;}
+  .story-head h2{font-size:clamp(1.9rem,3.4vw,2.6rem);}
+  .story-head p{color:var(--parchment-dim);margin-top:12px;}
+  .story-track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 32px 26px;scrollbar-width:thin;scrollbar-color:var(--amber) transparent;}
+  .story-track::-webkit-scrollbar{height:6px;}
+  .story-track::-webkit-scrollbar-thumb{background:var(--amber);border-radius:10px;}
+  .story-panel{scroll-snap-align:start;flex:0 0 min(340px,78vw);background:var(--walnut-2);border:1px solid var(--line);border-radius:6px;padding:30px 26px;}
+  .story-panel .step{font-family:'IBM Plex Mono',monospace;color:var(--amber-bright);font-size:0.8rem;margin-bottom:22px;display:block;}
+  .story-panel h3{font-size:1.3rem;margin-bottom:10px;}
+  .story-panel p{color:var(--parchment-dim);font-size:0.92rem;}
+  .story-hint{padding:0 32px;color:var(--parchment-dim);font-size:0.78rem;font-family:'IBM Plex Mono',monospace;}
+
+  section{padding:90px 0;}
+  .section-head{max-width:640px;margin-bottom:50px;}
+  .section-head h2{font-size:clamp(2rem,3.6vw,2.8rem);}
+  .section-head p{color:var(--parchment-dim);margin-top:14px;font-size:1.02rem;}
+
+  /* ================= EXPLORE — bento ================= */
+  .bento{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;}
+  .b-card{background:var(--walnut-2);border:1px solid var(--line);border-radius:6px;padding:28px;position:relative;overflow:hidden;}
+  .b-card h3{font-size:1.25rem;margin-bottom:10px;}
+  .b-card p{color:var(--parchment-dim);font-size:0.9rem;max-width:30ch;}
+  .b-card .tri{position:absolute;width:0;height:0;}
+  .b-1{grid-column:span 4;grid-row:span 2;padding:40px;}
+  .b-1 h3{font-size:1.8rem;}
+  .b-1 .tri{right:-30px;bottom:-30px;border-left:140px solid transparent;border-right:140px solid transparent;border-bottom:120px solid var(--walnut-3);transform:rotate(8deg);}
+  .b-2{grid-column:span 2;grid-row:span 1;}
+  .b-3{grid-column:span 2;grid-row:span 1;}
+  .b-4{grid-column:span 3;grid-row:span 1;}
+  .b-5{grid-column:span 3;grid-row:span 1;}
+  .b-6{grid-column:span 6;grid-row:span 1;display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;padding:36px;}
+  @media(max-width:900px){
+    .bento{grid-template-columns:1fr;}
+    .b-1,.b-2,.b-3,.b-4,.b-5,.b-6{grid-column:span 1;}
+    .b-6{grid-template-columns:1fr;}
+  }
+
+  /* before/after slider */
+  .ba-wrap{position:relative;aspect-ratio:4/3;border-radius:6px;overflow:hidden;border:1px solid var(--line);}
+  .ba-wrap svg{position:absolute;inset:0;width:100%;height:100%;}
+  .ba-after{position:absolute;inset:0;overflow:hidden;}
+  .ba-handle{position:absolute;top:0;bottom:0;width:2px;background:var(--amber);left:50%;pointer-events:none;}
+  .ba-handle::after{content:"↔";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;background:var(--amber);color:#241a12;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+  .ba-range{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0;}
+  .ba-label{position:absolute;top:12px;font-family:'IBM Plex Mono',monospace;font-size:0.68rem;background:rgba(36,26,18,0.75);padding:5px 10px;border-radius:3px;}
+  .ba-label.before{left:12px;}
+  .ba-label.after{right:12px;}
+
+  /* ================= SHOWCASE ================= */
+  .showcase-band{background:var(--walnut-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .filters{display:flex;gap:10px;margin-bottom:34px;flex-wrap:wrap;}
+  .filter-btn{background:none;border:1px solid var(--line);color:var(--parchment-dim);padding:9px 18px;border-radius:30px;font-size:0.84rem;cursor:pointer;font-family:'Inter',sans-serif;}
+  .filter-btn.active{background:var(--amber);border-color:var(--amber);color:#241a12;font-weight:600;}
+  .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .project{background:var(--walnut);border:1px solid var(--line);border-radius:6px;overflow:hidden;transition:opacity .35s, transform .35s;}
+  .project.hidden{display:none;}
+  .project .pv{aspect-ratio:4/3;display:flex;align-items:flex-end;padding:16px;position:relative;}
+  .project .pv svg{position:absolute;inset:0;width:100%;height:100%;}
+  .project .pv span{position:relative;z-index:1;font-family:'IBM Plex Mono',monospace;font-size:0.68rem;background:rgba(36,26,18,0.7);padding:5px 10px;border-radius:3px;}
+  .project .pt{padding:16px 18px 20px;}
+  .project h4{font-size:1.02rem;margin-bottom:4px;}
+  .project span.cat{color:var(--amber-bright);font-size:0.76rem;font-family:'IBM Plex Mono',monospace;}
+  .demo-note{margin-top:24px;color:var(--parchment-dim);font-size:0.8rem;}
+  @media(max-width:860px){ .projects{grid-template-columns:1fr 1fr;} }
+  @media(max-width:560px){ .projects{grid-template-columns:1fr;} }
+
+  /* ================= CONNECT ================= */
+  .connect-grid{display:grid;grid-template-columns:0.9fr 1.1fr;gap:60px;}
+  .connect-info h2{font-size:clamp(2rem,3.4vw,2.6rem);margin-bottom:16px;}
+  .connect-info p{color:var(--parchment-dim);max-width:420px;margin-bottom:28px;}
+  .info-list{list-style:none;}
+  .info-list li{display:flex;gap:16px;padding:14px 0;border-top:1px solid var(--line);font-size:0.94rem;}
+  .info-list li:last-child{border-bottom:1px solid var(--line);}
+  .info-list .label{width:100px;color:var(--parchment-dim);font-size:0.76rem;text-transform:uppercase;letter-spacing:0.03em;padding-top:2px;}
+
+  .stepper{display:flex;gap:8px;margin-bottom:26px;}
+  .step-dot{flex:1;height:3px;background:var(--line);border-radius:2px;overflow:hidden;}
+  .step-dot i{display:block;height:100%;width:0;background:var(--amber);transition:width .4s;}
+  .form-card{background:var(--walnut-2);border:1px solid var(--line);border-radius:8px;padding:32px;}
+  .f-step{display:none;}
+  .f-step.active{display:block;}
+  .chip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;}
+  .chip{border:1px solid var(--line);background:var(--walnut);border-radius:6px;padding:14px;cursor:pointer;font-size:0.88rem;text-align:left;color:var(--parchment-dim);}
+  .chip.selected{border-color:var(--amber);color:var(--parchment);background:var(--walnut-3);}
+  .form-card label{display:block;font-size:0.8rem;color:var(--parchment-dim);margin-bottom:6px;margin-top:16px;}
+  .form-card label:first-child{margin-top:0;}
+  .form-card input, .form-card textarea{width:100%;background:var(--walnut);border:1px solid var(--line);color:var(--parchment);padding:11px 13px;border-radius:5px;font-family:'Inter',sans-serif;font-size:0.92rem;}
+  .f-actions{display:flex;justify-content:space-between;margin-top:26px;}
+  .btn-sm{background:var(--amber);color:#241a12;border:none;padding:11px 24px;border-radius:5px;font-weight:600;font-size:0.88rem;cursor:pointer;}
+  .btn-sm.ghost{background:none;border:1px solid var(--line);color:var(--parchment-dim);}
+  .btn-sm:disabled{opacity:0.4;cursor:not-allowed;}
+  .summary-box{background:var(--walnut);border:1px solid var(--line);border-radius:6px;padding:18px;font-size:0.88rem;color:var(--parchment-dim);margin-bottom:18px;}
+  .summary-box strong{color:var(--parchment);}
+  .success{text-align:center;padding:20px 0;}
+  .success .mark{width:52px;height:52px;border-radius:50%;background:var(--amber);color:#241a12;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.4rem;}
+
+  footer{padding:36px 0;border-top:1px solid var(--line);}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:0.8rem;color:var(--parchment-dim);}
+
+  .demo-tag{position:fixed;bottom:16px;right:16px;background:var(--parchment);color:var(--walnut);font-family:'IBM Plex Mono',monospace;font-size:0.62rem;padding:7px 11px;border-radius:3px;z-index:60;letter-spacing:0.03em;}
+
+  @media(max-width:860px){
+    .connect-grid{grid-template-columns:1fr;}
+    .chip-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-tag">CINEMATIC DEMO-ENTWURF — NICHT VERÖFFENTLICHT</div>
+
+<nav id="mainnav">
+  <a class="brand" href="#home">
+    <svg width="30" height="30" viewBox="0 0 30 30"><polygon points="15,4 27,24 3,24" fill="none" stroke="#c17a3e" stroke-width="2.2" stroke-linejoin="round"/><line x1="9" y1="24" x2="15" y2="10" stroke="#c17a3e" stroke-width="1.6"/><line x1="21" y1="24" x2="15" y2="10" stroke="#c17a3e" stroke-width="1.6"/></svg>
+    Maiggler
+  </a>
+  <ul>
+    <li><a href="#home" class="active">Home</a></li>
+    <li><a href="#explore">Explore</a></li>
+    <li><a href="#showcase">Showcase</a></li>
+    <li><a href="#connect">Connect</a></li>
+  </ul>
+  <a href="#connect" class="cta">Anfrage starten</a>
+</nav>
+
+<!-- ================= HOME ================= -->
+<section class="home" id="home">
+  <svg class="truss-bg" id="trussbg" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice">
+    <g stroke="#4a3b28" stroke-width="2" fill="none">
+      <polygon points="700,60 1300,560 100,560" />
+      <line x1="400" y1="560" x2="700" y2="230" />
+      <line x1="1000" y1="560" x2="700" y2="230" />
+      <line x1="250" y1="560" x2="700" y2="130" />
+      <line x1="1150" y1="560" x2="700" y2="130" />
+    </g>
+  </svg>
+  <div class="wrap home-inner">
+    <span class="mono">ZIMMEREI MAIGGLER — STAFFLANGEN, SEIT GENERATIONEN IM HOLZ</span>
+    <h1 class="reveal">Holz trägt, <em>wenn man weiß, wie man es fügt.</em></h1>
+    <p class="reveal">Holzhäuser in Kreuzrahmenbauweise, Dachstühle, Innenausbau und Altbausanierung aus Stafflangen — gezimmert statt zusammengesetzt.</p>
+    <div class="btn-row reveal">
+      <a href="#connect" class="btn-amber">Projekt besprechen</a>
+      <a href="#explore" class="btn-ghost">Leistungen entdecken</a>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>SCROLLEN</span><div class="line"></div></div>
+</section>
+
+<!-- ================= STORY (horizontal) ================= -->
+<section class="story">
+  <div class="story-head reveal">
+    <span class="mono">Wie ein Dachstuhl entsteht</span>
+    <h2>Vom Stamm zum tragenden Gefüge.</h2>
+    <p>Vier Schritte, die bei uns noch Handwerk bedeuten.</p>
+  </div>
+  <div class="story-track">
+    <div class="story-panel reveal"><span class="step">01 — Holzauswahl</span><h3>Das richtige Holz</h3><p>Wir wählen Hölzer nach Tragfähigkeit, Trocknungsgrad und Verwendungszweck — keine Standardware von der Stange.</p></div>
+    <div class="story-panel reveal"><span class="step">02 — Abbund</span><h3>Zuschnitt &amp; Verbindung</h3><p>Präzise Zimmermannsverbindungen statt reiner Verschraubung — so, wie es seit Generationen trägt.</p></div>
+    <div class="story-panel reveal"><span class="step">03 — Aufrichten</span><h3>Der Richtfest-Moment</h3><p>Das Gefüge wird vor Ort aufgerichtet — oft der sichtbarste und emotionalste Schritt für unsere Kunden.</p></div>
+    <div class="story-panel reveal"><span class="step">04 — Übergabe</span><h3>Fertig &amp; abgenommen</h3><p>Geprüft, besprochen, übergeben — mit klarer Dokumentation und persönlicher Einweisung.</p></div>
+  </div>
+  <div class="story-hint">← seitlich scrollen oder wischen →</div>
+</section>
+
+<!-- ================= EXPLORE ================= -->
+<section id="explore">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="mono">Explore — Leistungen</span>
+      <h2>Vom Dachstuhl bis zum Wintergarten.</h2>
+      <p>Alles aus einer Zimmerei: Neubau, Sanierung und Holzbau-Details.</p>
+    </div>
+    <div class="bento">
+      <div class="b-card b-1 reveal">
+        <div class="tri"></div>
+        <h3>Holzhäuser in Kreuzrahmenbauweise</h3>
+        <p>Unsere Kernkompetenz: komplette Holzhäuser, gefügt statt nur montiert — energieeffizient und langlebig.</p>
+      </div>
+      <div class="b-card b-2 reveal"><h3>Dachstühle</h3><p>Klassisch oder als Sichtdachstuhl.</p></div>
+      <div class="b-card b-3 reveal"><h3>Innenausbau</h3><p>Holzdecken, Treppen, Einbauten.</p></div>
+      <div class="b-card b-4 reveal"><h3>Wintergärten &amp; Pergola</h3><p>Lichtdurchflutete Holzkonstruktionen für draußen.</p></div>
+      <div class="b-card b-5 reveal"><h3>Carport &amp; Vordächer</h3><p>Schnell geplant, solide gebaut.</p></div>
+      <div class="b-card b-6 reveal">
+        <div>
+          <h3>Altbausanierung</h3>
+          <p>Ziehen Sie den Regler, um den Unterschied zu sehen — so könnte eine typische Sanierung aussehen (Demo-Illustration).</p>
+        </div>
+        <div class="ba-wrap">
+          <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="300" fill="#2d2117"/>
+            <g stroke="#6b5a42" stroke-width="2" fill="none" opacity="0.8">
+              <path d="M60 220 L60 120 L200 60 L340 120 L340 220 Z"/>
+              <path d="M90 220 L90 140 M130 220 L130 150 M250 220 L250 150 M300 220 L300 140" stroke-dasharray="3 5"/>
+              <path d="M60 180 L340 180" stroke-dasharray="2 8"/>
+            </g>
+          </svg>
+          <div class="ba-after" id="baAfter">
+            <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+              <rect width="400" height="300" fill="#c17a3e" opacity="0.15"/>
+              <g stroke="#dd9657" stroke-width="2.4" fill="none">
+                <path d="M60 220 L60 120 L200 60 L340 120 L340 220 Z"/>
+                <rect x="90" y="150" width="60" height="70" />
+                <rect x="250" y="150" width="60" height="70" />
+                <path d="M60 220 L340 220" stroke-width="3"/>
+              </g>
+            </svg>
+          </div>
+          <div class="ba-handle" id="baHandle"></div>
+          <span class="ba-label before">VORHER</span>
+          <span class="ba-label after">NACHHER</span>
+          <input type="range" class="ba-range" id="baRange" min="0" max="100" value="50" aria-label="Vorher/Nachher-Regler">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SHOWCASE ================= -->
+<section class="showcase-band" id="showcase">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="mono">Showcase — Projekte</span>
+      <h2>Ausgewählte Arbeiten.</h2>
+      <p>Diese Projektkarten sind als Beispiel gestaltet, um zu zeigen, wie echte Referenzfotos später wirken würden.</p>
+    </div>
+    <div class="filters reveal">
+      <button class="filter-btn active" data-filter="alle">Alle</button>
+      <button class="filter-btn" data-filter="holzhaus">Holzhäuser</button>
+      <button class="filter-btn" data-filter="dachstuhl">Dachstühle</button>
+      <button class="filter-btn" data-filter="sanierung">Sanierung</button>
+    </div>
+    <div class="projects reveal" id="projectGrid">
+      <div class="project" data-cat="holzhaus">
+        <div class="pv"><svg viewBox="0 0 300 220"><rect width="300" height="220" fill="#241a12"/><polygon points="150,30 260,110 40,110" fill="none" stroke="#c17a3e" stroke-width="2"/><rect x="60" y="110" width="180" height="90" fill="none" stroke="#c17a3e" stroke-width="2"/></svg><span>Demo-Projekt</span></div>
+        <div class="pt"><h4>Holzhaus am Waldrand</h4><span class="cat">Holzhaus · Kreuzrahmen</span></div>
+      </div>
+      <div class="project" data-cat="dachstuhl">
+        <div class="pv"><svg viewBox="0 0 300 220"><rect width="300" height="220" fill="#2d2117"/><polygon points="150,40 250,120 50,120" fill="none" stroke="#dd9657" stroke-width="2"/><line x1="100" y1="120" x2="150" y2="70" stroke="#dd9657"/><line x1="200" y1="120" x2="150" y2="70" stroke="#dd9657"/></svg><span>Demo-Projekt</span></div>
+        <div class="pt"><h4>Sichtdachstuhl Scheune</h4><span class="cat">Dachstuhl</span></div>
+      </div>
+      <div class="project" data-cat="sanierung">
+        <div class="pv"><svg viewBox="0 0 300 220"><rect width="300" height="220" fill="#241a12"/><rect x="60" y="60" width="180" height="120" fill="none" stroke="#c17a3e" stroke-width="2"/><line x1="60" y1="100" x2="240" y2="100" stroke="#c17a3e" stroke-dasharray="3 6"/></svg><span>Demo-Projekt</span></div>
+        <div class="pt"><h4>Altbau Innenausbau</h4><span class="cat">Sanierung · Innenausbau</span></div>
+      </div>
+      <div class="project" data-cat="holzhaus">
+        <div class="pv"><svg viewBox="0 0 300 220"><rect width="300" height="220" fill="#2d2117"/><polygon points="150,35 240,105 60,105" fill="none" stroke="#c17a3e" stroke-width="2"/><rect x="80" y="105" width="140" height="85" fill="none" stroke="#c17a3e" stroke-width="2"/></svg><span>Demo-Projekt</span></div>
+        <div class="pt"><h4>Familienhaus Stafflangen</h4><span class="cat">Holzhaus</span></div>
+      </div>
+      <div class="project" data-cat="dachstuhl">
+        <div class="pv"><svg viewBox="0 0 300 220"><rect width="300" height="220" fill="#241a12"/><polygon points="150,45 235,115 65,115" fill="none" stroke="#dd9657" stroke-width="2"/></svg><span>Demo-Projekt</span></div>
+        <div class="pt"><h4>Wintergarten-Dachstuhl</h4><span class="cat">Dachstuhl · Wintergarten</span></div>
+      </div>
+      <div class="project" data-cat="sanierung">
+        <div class="pv"><svg viewBox="0 0 300 220"><rect width="300" height="220" fill="#2d2117"/><rect x="70" y="70" width="160" height="110" fill="none" stroke="#dd9657" stroke-width="2"/></svg><span>Demo-Projekt</span></div>
+        <div class="pt"><h4>Hofgebäude Modernisierung</h4><span class="cat">Sanierung</span></div>
+      </div>
+    </div>
+    <p class="demo-note">Alle sechs Projekte sind Platzhalter-Beispiele für diesen Entwurf — echte Referenzfotos ersetzen sie beim finalen Launch.</p>
+  </div>
+</section>
+
+<!-- ================= CONNECT ================= -->
+<section id="connect">
+  <div class="wrap connect-grid">
+    <div class="connect-info reveal">
+      <span class="mono">Connect</span>
+      <h2>Lassen Sie uns über Ihr Projekt sprechen.</h2>
+      <p>Egal ob neues Holzhaus, Dachstuhl oder Sanierung — wir melden uns zeitnah mit einem ersten Vorschlag.</p>
+      <ul class="info-list">
+        <li><span class="label">Adresse</span><span>Biberacher Str. 20, 88400 Biberach (Stafflangen)</span></li>
+        <li><span class="label">Telefon</span><span>07357 91226</span></li>
+      </ul>
+    </div>
+    <div class="form-card reveal">
+      <div class="stepper"><div class="step-dot"><i id="dot1"></i></div><div class="step-dot"><i id="dot2"></i></div><div class="step-dot"><i id="dot3"></i></div></div>
+
+      <div class="f-step active" id="step1">
+        <label>Worum geht es?</label>
+        <div class="chip-grid" id="chipGrid">
+          <button type="button" class="chip" data-v="Holzhaus">Neues Holzhaus</button>
+          <button type="button" class="chip" data-v="Dachstuhl">Dachstuhl</button>
+          <button type="button" class="chip" data-v="Sanierung">Altbausanierung</button>
+          <button type="button" class="chip" data-v="Sonstiges">Sonstiges</button>
+        </div>
+        <div class="f-actions"><span></span><button class="btn-sm" id="toStep2" disabled>Weiter</button></div>
+      </div>
+
+      <div class="f-step" id="step2">
+        <label for="cname">Name</label>
+        <input id="cname" type="text" placeholder="Ihr Name">
+        <label for="cphone">Telefon oder E-Mail</label>
+        <input id="cphone" type="text" placeholder="Wie erreichen wir Sie?">
+        <label for="cmsg">Kurz zu Ihrem Vorhaben</label>
+        <textarea id="cmsg" rows="3" placeholder="z. B. Grundstücksgröße, Zeitrahmen …"></textarea>
+        <div class="f-actions"><button class="btn-sm ghost" id="toStep1">Zurück</button><button class="btn-sm" id="toStep3">Weiter</button></div>
+      </div>
+
+      <div class="f-step" id="step3">
+        <div class="summary-box" id="summaryBox"></div>
+        <div class="f-actions"><button class="btn-sm ghost" id="backStep2">Zurück</button><button class="btn-sm" id="submitForm">Anfrage senden</button></div>
+      </div>
+
+      <div class="f-step" id="stepDone">
+        <div class="success">
+          <div class="mark">✓</div>
+          <h3 style="margin-bottom:8px;">Anfrage erfasst</h3>
+          <p style="color:var(--parchment-dim);font-size:0.9rem;">Dies ist ein Demo-Formular — in der echten Version würde die Anfrage jetzt direkt bei Zimmerei Maiggler ankommen.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© Zimmerei Maiggler, Stafflangen</span>
+    <span>Impressum · Datenschutz</span>
+  </div>
+</footer>
+
+<script>
+/* reveal-on-scroll */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+},{threshold:0.15});
+revealEls.forEach(el=>io.observe(el));
+
+/* nav active state */
+const sections = ['home','explore','showcase','connect'].map(id=>document.getElementById(id));
+const navLinks = document.querySelectorAll('#mainnav ul a');
+const navIO = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      navLinks.forEach(l=>l.classList.toggle('active', l.getAttribute('href') === '#'+entry.target.id));
+    }
+  });
+},{threshold:0.5});
+sections.forEach(s=> s && navIO.observe(s));
+
+/* hero parallax (respects reduced motion) */
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const trussBg = document.getElementById('trussbg');
+if(!reduceMotion){
+  window.addEventListener('scroll', ()=>{
+    const y = window.scrollY;
+    trussBg.style.transform = `translateY(${y*0.18}px) scale(${1+Math.min(y/4000,0.08)})`;
+  }, {passive:true});
+}
+
+/* before/after slider */
+const baRange = document.getElementById('baRange');
+const baAfter = document.getElementById('baAfter');
+const baHandle = document.getElementById('baHandle');
+function setBA(v){
+  baAfter.style.clipPath = `inset(0 ${100-v}% 0 0)`;
+  baHandle.style.left = v + '%';
+}
+setBA(50);
+baRange.addEventListener('input', e => setBA(e.target.value));
+
+/* project filter */
+const filterBtns = document.querySelectorAll('.filter-btn');
+const projects = document.querySelectorAll('.project');
+filterBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    filterBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    projects.forEach(p=>{
+      p.classList.toggle('hidden', f !== 'alle' && p.dataset.cat !== f);
+    });
+  });
+});
+
+/* multi-step form */
+let chosenType = null;
+const chips = document.querySelectorAll('.chip');
+chips.forEach(c=>{
+  c.addEventListener('click', ()=>{
+    chips.forEach(x=>x.classList.remove('selected'));
+    c.classList.add('selected');
+    chosenType = c.dataset.v;
+    document.getElementById('toStep2').disabled = false;
+  });
+});
+
+function showStep(id){
+  document.querySelectorAll('.f-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('dot1').style.width = '100%';
+  document.getElementById('dot2').style.width = (id==='step2'||id==='step3'||id==='stepDone') ? '100%':'0%';
+  document.getElementById('dot3').style.width = (id==='step3'||id==='stepDone') ? '100%':'0%';
+}
+
+document.getElementById('toStep2').addEventListener('click', ()=> showStep('step2'));
+document.getElementById('toStep1').addEventListener('click', ()=> showStep('step1'));
+document.getElementById('toStep3').addEventListener('click', ()=>{
+  const name = document.getElementById('cname').value || '—';
+  const contact = document.getElementById('cphone').value || '—';
+  const msg = document.getElementById('cmsg').value || '—';
+  document.getElementById('summaryBox').innerHTML =
+    `<strong>Anliegen:</strong> ${chosenType || '—'}<br>` +
+    `<strong>Name:</strong> ${name}<br>` +
+    `<strong>Kontakt:</strong> ${contact}<br>` +
+    `<strong>Nachricht:</strong> ${msg}`;
+  showStep('step3');
+});
+document.getElementById('backStep2').addEventListener('click', ()=> showStep('step2'));
+document.getElementById('submitForm').addEventListener('click', ()=> showStep('stepDone'));
+</script>
+
+</body>
+</html>
